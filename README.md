@@ -27,6 +27,8 @@ module.exports = {
 
 在 md 文件中可以按照以下格式书写代码示例:
 
+## 传统语法
+
 ```html
 ::: demo
 ```vue
@@ -48,6 +50,129 @@ module.exports = {
     }
   }
 </script>
+` ``
+<!-- 忽略上一行的空格 -->
+:::
+```
+
+## Script Setup 语法 (Vue 2.7+)
+
+现在插件已经完全支持 Vue 2.7+ 的 script-setup 语法，包括：
+
+### 基本用法
+
+```html
+::: demo
+```vue
+<template>
+  <div>
+    <p>{{ message }}</p>
+    <input v-model="message" placeholder="Input something..."/>
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('Hello Here with Script Setup!')
+</script>
+` ``
+<!-- 忽略上一行的空格 -->
+:::
+```
+
+### 高级用法
+
+插件支持 script-setup 的所有特性，包括：
+
+- 响应式 API（ref, reactive, computed, watch, watchEffect）
+- 函数声明
+- defineProps 和 defineEmits
+- 复杂的导入语句
+
+```html
+::: demo
+```vue
+<template>
+  <div>
+    <h1>{{ greeting }}</h1>
+    <p>Counter: {{ count }}</p>
+    <p>Doubled: {{ doubled }}</p>
+    <button @click="increment">Increase</button>
+    <button @click="decrement">Decrease</button>
+  </div>
+</template>
+<script setup>
+import { ref, computed, watch } from 'vue'
+
+const count = ref(0)
+const greeting = 'Hello, Advanced Script Setup!'
+
+const doubled = computed(() => count.value * 2)
+
+const increment = () => {
+  count.value++
+}
+
+const decrement = () => {
+  count.value--
+}
+
+// 监听 count 变化
+watch(count, (newValue, oldValue) => {
+  console.log(`Count changed from ${oldValue} to ${newValue}`)
+})
+</script>
+<style scoped>
+h1 {
+  color: #42b983;
+}
+</style>
+` ``
+<!-- 忽略上一行的空格 -->
+:::
+```
+
+### 使用 defineProps 和 defineEmits
+
+```html
+::: demo
+```vue
+<template>
+  <div>
+    <h2>{{ title }}</h2>
+    <p>Message: {{ message }}</p>
+    <button @click="sendMessage">Send Message</button>
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: 'Default Title'
+  },
+  initialMessage: {
+    type: String,
+    default: 'Hello'
+  }
+})
+
+const emit = defineEmits(['message-sent'])
+
+const message = ref(props.initialMessage)
+
+const sendMessage = () => {
+  emit('message-sent', message.value)
+}
+</script>
+<style scoped>
+div {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+}
+</style>
 ` ``
 <!-- 忽略上一行的空格 -->
 :::

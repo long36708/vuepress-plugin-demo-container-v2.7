@@ -1,0 +1,154 @@
+# 高级 Script Setup 语法测试
+
+## 复杂示例
+
+::: demo 使用 script setup 语法的复杂示例
+
+```vue
+<template>
+  <div>
+    <h1>{{ greeting }}</h1>
+    <p>Counter: {{ count }}</p>
+    <p>Doubled: {{ doubled }}</p>
+    <button @click="increment">Increase</button>
+    <button @click="decrement">Decrease</button>
+    <button @click="reset">Reset</button>
+    <div v-if="user">
+      <p>User: {{ user.name }}</p>
+      <p>Email: {{ user.email }}</p>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, reactive, watch } from 'vue'
+
+const count = ref(0)
+const greeting = 'Hello, Advanced Script Setup!'
+const user = reactive({ name: 'John Doe', email: 'john@example.com' })
+
+const doubled = computed(() => count.value * 2)
+
+const increment = () => {
+  count.value++
+}
+
+const decrement = () => {
+  count.value--
+}
+
+const reset = () => {
+  count.value = 0
+}
+
+// 监听 count 变化
+watch(count, (newValue, oldValue) => {
+  console.log(`Count changed from ${oldValue} to ${newValue}`)
+})
+</script>
+
+<style scoped>
+h1 {
+  color: #42b983;
+}
+
+button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #42b983;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3aa876;
+}
+</style>
+```
+
+:::
+
+## 使用 defineProps 和 defineEmits
+
+[//]: # ()
+[//]: # (::: demo 使用 defineProps 和 defineEmits 的示例)
+
+[//]: # ()
+[//]: # (```vue)
+
+[//]: # (<template>)
+
+[//]: # (  <div>)
+
+[//]: # (    <h2>{{ title }}</h2>)
+
+[//]: # (    <p>Message: {{ message }}</p>)
+
+[//]: # (    <button @click="sendMessage">Send Message</button>)
+
+[//]: # (  </div>)
+
+[//]: # (</template>)
+
+[//]: # ()
+[//]: # (<script setup>)
+
+[//]: # (import { ref } from 'vue')
+
+[//]: # ()
+[//]: # (const props = defineProps&#40;{)
+
+[//]: # (  title: {)
+
+[//]: # (    type: String,)
+
+[//]: # (    default: 'Default Title')
+
+[//]: # (  },)
+
+[//]: # (  initialMessage: {)
+
+[//]: # (    type: String,)
+
+[//]: # (    default: 'Hello')
+
+[//]: # (  })
+
+[//]: # (}&#41;)
+
+[//]: # ()
+[//]: # (const emit = defineEmits&#40;['message-sent']&#41;)
+
+[//]: # ()
+[//]: # (const message = ref&#40;props.initialMessage&#41;)
+
+[//]: # ()
+[//]: # (const sendMessage = &#40;&#41; => {)
+
+[//]: # (  emit&#40;'message-sent', message.value&#41;)
+
+[//]: # (})
+
+[//]: # (</script>)
+
+[//]: # ()
+[//]: # (<style scoped>)
+
+[//]: # (div {)
+
+[//]: # (  border: 1px solid #ddd;)
+
+[//]: # (  padding: 15px;)
+
+[//]: # (  border-radius: 5px;)
+
+[//]: # (})
+
+[//]: # (</style>)
+
+[//]: # (```)
+
+[//]: # ()
+[//]: # (:::)

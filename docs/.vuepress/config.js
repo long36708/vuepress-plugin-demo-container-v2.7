@@ -24,6 +24,15 @@ module.exports = {
         editLinks: false,
         docsDir: 'docs',
         locales: {
+            '/zh/': {
+                label: '简体中文',
+                selectText: '选择语言',
+                editLinkText: '在 GitHub 上编辑此页',
+                lastUpdated: '上次更新',
+                sidebar: {
+                    '/zh/': genSidebarConfig('指南')
+                }
+            },
             '/': {
                 label: 'English',
                 selectText: 'Languages',
@@ -33,15 +42,6 @@ module.exports = {
                     '/': genSidebarConfig('Guide')
                 }
             },
-            '/zh/': {
-                label: '简体中文',
-                selectText: '选择语言',
-                editLinkText: '在 GitHub 上编辑此页',
-                lastUpdated: '上次更新',
-                sidebar: {
-                    '/zh/': genSidebarConfig('指南')
-                }
-            }
         }
     },
     plugins: [
@@ -90,7 +90,9 @@ function genSidebarConfig(title) {
                 '',
                 'started',
                 'options',
-                'complex'
+                'complex',
+                'test-script-setup',
+                'test-script-setup-advanced'
             ]
         }
     ]

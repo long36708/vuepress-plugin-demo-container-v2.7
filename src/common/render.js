@@ -29,8 +29,10 @@ module.exports = function (content) {
     const commentContent = content.slice(commentStart + startTagLen, commentEnd);
     const html = stripTemplate(commentContent);
     const script = stripScript(commentContent);
+    // 检查是否使用了<script setup>语法
+    const isScriptSetup = /<script\s+setup\b/i.test(commentContent);
     const style = stripStyle(commentContent);
-    const [demoComponentContent, tepimportPair] = genInlineComponentText(html, script); // 示例组件代码内容
+    const [demoComponentContent, tepimportPair] = genInlineComponentText(html, script, isScriptSetup); // 示例组件代码内容
     Object.assign(importPair, tepimportPair)
     const demoComponentName = `render-demo-${id}`; // 示例代码组件名称
     templateArr.push(`<template><${demoComponentName} /></template>`);

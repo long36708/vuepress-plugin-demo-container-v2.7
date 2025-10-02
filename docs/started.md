@@ -8,13 +8,13 @@ Please refer to the official Vuepress documentation, [click here to view](https:
 
 ### Install the plugin
 
-Use `yarn` to install the` vuepress-plugin-demo-container-v2` component:
+Use `yarn` to install the` vuepress-plugin-demo-container-v2.7` component:
 ```bash
-yarn add vuepress-plugin-demo-container-v2 -D
+yarn add vuepress-plugin-demo-container-v2.7 -D
 ```
 Or use `npm` to install it:
 ```bash
-npm i vuepress-plugin-demo-container-v2 --save-dev
+npm i vuepress-plugin-demo-container-v2.7 --save-dev
 ```
 
 ### Configure plugin
@@ -23,7 +23,7 @@ Open the `.vuepress/config.js` file, and then reference the plugin in the approp
 
 ```js
 module.exports = {
-  plugins: ['demo-container-v2']
+  plugins: ['demo-container-v2.7']
 }
 ```
 
@@ -88,3 +88,25 @@ The running effect is as follows
 </script>
 ```
 :::
+
+### Using Script Setup Syntax (Vue 2.7+)
+
+Starting from Vue 2.7, you can use the `<script setup>` syntax to simplify component writing. This plugin now supports this syntax:
+
+```html
+::: demo Example using Script Setup syntax
+```vue
+<template>
+  <div>
+    <p>{{ message }}</p>
+    <AInput v-model="message" placeholder="Input something..." />
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('Hello Here with Script Setup!')
+</script>
+` ``
+:::
+```

@@ -70,6 +70,28 @@ module.exports = {
 :::
 ```
 
+### 使用 Script Setup 语法 (Vue 2.7+)
+
+从 Vue 2.7 开始，你可以使用 `<script setup>` 语法来简化组件编写。该插件现已支持此语法：
+
+```html
+::: demo 使用 Script Setup 语法的示例
+```vue
+<template>
+  <div>
+    <p>{{ message }}</p>
+    <AInput v-model="message" placeholder="Input something..." />
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('Hello Here with Script Setup!')
+</script>
+` ``
+:::
+```
+
 运行效果如下
 
 ::: demo 此处放置代码示例的描述信息，支持 `Markdown` 语法，**描述信息只支持单行**

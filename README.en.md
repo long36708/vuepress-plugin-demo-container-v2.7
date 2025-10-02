@@ -11,11 +11,11 @@ It can help you:
 # Install
 Use `yarn`:
 ```bash
-yarn add vuepress-plugin-demo-container-v2 -D
+yarn add vuepress-plugin-demo-container-v2.7 -D
 ```
 Or `npm`:
 ```bash
-npm i vuepress-plugin-demo-container-v2 -D
+npm i vuepress-plugin-demo-container-v2.7 -D
 ```
 
 # Usage
@@ -23,11 +23,13 @@ Open the `.vuepress/config.js` file, and then reference the plugin in the approp
 
 ```js
 module.exports = {
-  plugins: ['demo-container-v2']
+  plugins: ['demo-container-v2.7']
 }
 ```
 
 Write the following code in the Markdown file:
+
+## Traditional Syntax
 
 ```html
 ::: demo
@@ -50,6 +52,129 @@ Write the following code in the Markdown file:
     }
   }
 </script>
+` ``
+<!-- ignore space in the previous line -->
+:::
+```
+
+## Script Setup Syntax (Vue 2.7+)
+
+The plugin now fully supports Vue 2.7+ script-setup syntax, including:
+
+### Basic Usage
+
+```html
+::: demo
+```vue
+<template>
+  <div>
+    <p>{{ message }}</p>
+    <input v-model="message" placeholder="Input something..."/>
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const message = ref('Hello Here with Script Setup!')
+</script>
+` ``
+<!-- ignore space in the previous line -->
+:::
+```
+
+### Advanced Usage
+
+The plugin supports all features of script-setup, including:
+
+- Reactive APIs (ref, reactive, computed, watch, watchEffect)
+- Function declarations
+- defineProps and defineEmits
+- Complex import statements
+
+```html
+::: demo
+```vue
+<template>
+  <div>
+    <h1>{{ greeting }}</h1>
+    <p>Counter: {{ count }}</p>
+    <p>Doubled: {{ doubled }}</p>
+    <button @click="increment">Increase</button>
+    <button @click="decrement">Decrease</button>
+  </div>
+</template>
+<script setup>
+import { ref, computed, watch } from 'vue'
+
+const count = ref(0)
+const greeting = 'Hello, Advanced Script Setup!'
+
+const doubled = computed(() => count.value * 2)
+
+const increment = () => {
+  count.value++
+}
+
+const decrement = () => {
+  count.value--
+}
+
+// Watch count changes
+watch(count, (newValue, oldValue) => {
+  console.log(`Count changed from ${oldValue} to ${newValue}`)
+})
+</script>
+<style scoped>
+h1 {
+  color: #42b983;
+}
+</style>
+` ``
+<!-- ignore space in the previous line -->
+:::
+```
+
+### Using defineProps and defineEmits
+
+```html
+::: demo
+```vue
+<template>
+  <div>
+    <h2>{{ title }}</h2>
+    <p>Message: {{ message }}</p>
+    <button @click="sendMessage">Send Message</button>
+  </div>
+</template>
+<script setup>
+import { ref } from 'vue'
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: 'Default Title'
+  },
+  initialMessage: {
+    type: String,
+    default: 'Hello'
+  }
+})
+
+const emit = defineEmits(['message-sent'])
+
+const message = ref(props.initialMessage)
+
+const sendMessage = () => {
+  emit('message-sent', message.value)
+}
+</script>
+<style scoped>
+div {
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 5px;
+}
+</style>
 ` ``
 <!-- ignore space in the previous line -->
 :::

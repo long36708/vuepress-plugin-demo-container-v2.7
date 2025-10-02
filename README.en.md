@@ -1,23 +1,25 @@
-# 简介
+# Introduction
 
-`Demo Container V2` 是一个基于 `Vuepress` 的插件，它可以为你提供简单便利的组件示例编写体验。
+[中文 README](https://github.com/waycowei/vuepress-plugin-demo-container-v2/blob/master/README.md)
 
-它可以帮你做到：
-1. 使用自定义 `::: demo` 语法，写一遍示例即可自动生成组件示例与代码示例；
-2. 支持示例中的 `import` 语法；
+`Demo Container V2` is a `Vuepress-based` plug-in, which can help you add `Vue` examples when writing documents.
 
-# 安装
-使用 `yarn`:
+It can help you:
+1. Write an example to automatically generate component examples and code examples by the custom `::: demo` syntax;
+2. Support the `import` syntax in code example;
+
+# Install
+Use `yarn`:
 ```bash
 yarn add vuepress-plugin-demo-container-v2 -D
 ```
-或者 `npm`:
+Or `npm`:
 ```bash
 npm i vuepress-plugin-demo-container-v2 -D
 ```
 
-# 使用
-打开 `.vuepress/config.js` 文件, 添加插件:
+# Usage
+Open the `.vuepress/config.js` file, and then reference the plugin in the appropriate location:
 
 ```js
 module.exports = {
@@ -25,7 +27,7 @@ module.exports = {
 }
 ```
 
-在 md 文件中可以按照以下格式书写代码示例:
+Write the following code in the Markdown file:
 
 ```html
 ::: demo
@@ -49,16 +51,16 @@ module.exports = {
   }
 </script>
 ` ``
-<!-- 忽略上一行的空格 -->
+<!-- ignore space in the previous line -->
 :::
 ```
 
-[点此查看完整文档](https://waycowei.github.io/vuepress-plugin-demo-container-v2/zh/)
+[View full documentation](https://waycowei.github.io/vuepress-plugin-demo-container-v2/zh/)
 
-# 致谢
-该项目是受到 ElementUI / [md-loader](https://github.com/element-plus/element-plus/tree/dev/website/md-loader) 的启发而生，向 **饿了么大前端** 致意。
+# Thanks
+This project is heavily inspired by the [md-loader](https://github.com/element-plus/element-plus/tree/dev/website/md-loader) of ElemeFE team.
 
-# 贡献者
+# Contributors
 <p>
   <a href="https://github.com/calebman" target="_blank">
     <img src="https://avatars0.githubusercontent.com/u/27751088" width="54px" height="54px" style="border-radius: 50%;" title="JianhuiChen" class="avatar-user avatar">
@@ -68,6 +70,6 @@ module.exports = {
   </a>
 </p>
 
-# 许可
+# License
 
 [MIT License](https://github.com/waycowei/vuepress-plugin-demo-container-v2/blob/master/LICENSE) @2020-PRESENT [Wayco Wei](https://github.com/waycowei)

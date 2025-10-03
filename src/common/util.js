@@ -108,28 +108,68 @@ function genInlineComponentText(template, script, isScriptSetup = false) {
       // 移除import语句后的script内容
       const scriptWithoutImports = script.trim();
       
-      // 对于<script setup>，我们不需要手动提取顶层绑定
-      // 而是直接将整个脚本内容作为setup函数的主体
-      // 并假设所有声明的标识符都需要暴露
+      // 更精确地提取顶层绑定，避免重复声明
       const topLevelBindings = new Set();
+      const lines = scriptWithoutImports.split('\n');
       
-      // 简单提取所有可能的标识符
-      const identifierRegex = /(?:const|let|var)\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=/g;
-      let match;
-      while ((match = identifierRegex.exec(scriptWithoutImports)) !== null) {
-        topLevelBindings.add(match[1]);
+      // 首先收集所有的 defineProps 和 defineEmits 调用
+      const definePropsMatches = [];
+      const defineEmitsMatches = [];
+      
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('//') || trimmedLine.startsWith('/*') || trimmedLine === '') {
+          continue;
+        }
+        
+        // 匹配 defineProps 调用
+        const propsMatch = trimmedLine.match(/^(?:const\s+)?([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=\s*defineProps\s*\(/);
+        if (propsMatch) {
+          definePropsMatches.push(propsMatch[1]);
+          continue;
+        }
+        
+        // 匹配 defineEmits 调用
+        const emitsMatch = trimmedLine.match(/^(?:const\s+)?([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=\s*defineEmits\s*\(/);
+        if (emitsMatch) {
+          defineEmitsMatches.push(emitsMatch[1]);
+          continue;
+        }
       }
       
-      // 也提取函数声明
-      const functionRegex = /function\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*\(/g;
-      while ((match = functionRegex.exec(scriptWithoutImports)) !== null) {
-        topLevelBindings.add(match[1]);
-      }
-      
-      // 提取箭头函数
-      const arrowRegex = /([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=\s*\([^)]*\)\s*=>/g;
-      while ((match = arrowRegex.exec(scriptWithoutImports)) !== null) {
-        topLevelBindings.add(match[1]);
+      // 然后收集其他的顶层绑定
+      for (const line of lines) {
+        const trimmedLine = line.trim();
+        if (trimmedLine.startsWith('//') || trimmedLine.startsWith('/*') || trimmedLine === '') {
+          continue;
+        }
+        
+        // 匹配变量声明 (const/let/var)
+        const varMatch = trimmedLine.match(/^(?:const|let|var)\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=/);
+        if (varMatch) {
+          // 确保不是 defineProps 或 defineEmits 的结果
+          if (!definePropsMatches.includes(varMatch[1]) && !defineEmitsMatches.includes(varMatch[1])) {
+            topLevelBindings.add(varMatch[1]);
+          }
+          continue;
+        }
+        
+        // 匹配函数声明
+        const funcMatch = trimmedLine.match(/^function\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\s*\(/);
+        if (funcMatch) {
+          topLevelBindings.add(funcMatch[1]);
+          continue;
+        }
+        
+        // 匹配箭头函数赋值
+        const arrowMatch = trimmedLine.match(/^([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=\s*(?:\([^)]*\)|[a-zA-Z_$][0-9a-zA-Z_$]*)\s*=>/);
+        if (arrowMatch) {
+          // 确保不是 defineProps 或 defineEmits 的结果
+          if (!definePropsMatches.includes(arrowMatch[1]) && !defineEmitsMatches.includes(arrowMatch[1])) {
+            topLevelBindings.add(arrowMatch[1]);
+          }
+          continue;
+        }
       }
       
       // 处理 defineProps 和 defineEmits 宏
@@ -167,6 +207,33 @@ function genInlineComponentText(template, script, isScriptSetup = false) {
         }
       }
       
+      // 从 scriptWithoutImports 中移除 defineProps 和 defineEmits 调用
+      // 但是保留它们的赋值变量，因为这些变量在代码中可能被使用
+      let processedScriptWithoutImports = scriptWithoutImports
+        .replace(/(?:const\s+)?([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=\s*defineProps\s*\(\s*([^)]*)\s*\)/g, (match, varName) => {
+          // 如果有变量名，且变量名不是 'props'，保留变量声明但不调用 defineProps
+          // 若变量名为 'props'，函数参数已存在，避免重复声明
+          if (!varName) return '';
+          if (varName === 'props') return '';
+          return `const ${varName} = props`;
+        })
+        .replace(/(?:const\s+)?([a-zA-Z_$][0-9a-zA-Z_$]*)\s*=\s*defineEmits\s*\(\s*([^)]*)\s*\)/g, (match, varName) => {
+          // 如果有变量名，且变量名不是 'emit'，保留变量声明但不调用 defineEmits
+          // 若变量名为 'emit'，函数参数已存在，避免重复声明
+          if (!varName) return '';
+          if (varName === 'emit') return '';
+          return `const ${varName} = emit`;
+        })
+        // 额外移除未赋值（裸调用）的 defineProps/defineEmits，避免残留宏调用导致运行时错误
+        .replace(/\bdefineProps\s*\([^)]*\)\s*;?/g, '')
+        .replace(/\bdefineEmits\s*\([^)]*\)\s*;?/g, '');
+      
+      // 移除空行
+      processedScriptWithoutImports = processedScriptWithoutImports
+        .split('\n')
+        .filter(line => line.trim() !== '')
+        .join('\n');
+      
       // 对于<script setup>，我们需要将整个脚本内容包装在setup函数中
       // 这样可以确保所有声明的变量和函数都能在模板中使用
       script = importStatements.join(os.EOL) + os.EOL;
@@ -180,13 +247,42 @@ function genInlineComponentText(template, script, isScriptSetup = false) {
         script += `  emits: ${emitsDef},\n`;
       }
       
-      script += '  setup() {\n';
-      script += scriptWithoutImports + '\n';
-      script += '    return {\n';
-      if (topLevelBindings.size > 0) {
-        script += '      ' + Array.from(topLevelBindings).join(',\n      ') + '\n';
+      script += '  setup(props, { emit }) {\n';
+      // 将处理后的 scriptWithoutImports 内容插入到 setup 函数中
+      script += processedScriptWithoutImports + '\n';
+      const hasUserReturn = /(?:^|[\s;])return\s*\{[\s\S]*?\}\s*;?/m.test(processedScriptWithoutImports);
+      if (!hasUserReturn) {
+        script += '    return {\n';
+        // 构建返回条目数组，确保逗号位置正确
+        const returnEntries = [];
+        // 过滤掉不应该暴露的内部变量
+        const filteredBindings = Array.from(topLevelBindings).filter(binding =>
+          !['props', 'emit'].includes(binding)
+        );
+        if (filteredBindings.length > 0) {
+          // 直接把每个绑定作为单独条目（键名简写）
+          returnEntries.push(...filteredBindings);
+        }
+        // 确保 props 和 emit 变量在返回对象中（以 key: value 形式）
+        if (definePropsMatches.length > 0) {
+          definePropsMatches.forEach(varName => {
+            if (!filteredBindings.includes(varName)) {
+              returnEntries.push(`${varName}: props`);
+            }
+          });
+        }
+        if (defineEmitsMatches.length > 0) {
+          defineEmitsMatches.forEach(varName => {
+            if (!filteredBindings.includes(varName)) {
+              returnEntries.push(`${varName}: emit`);
+            }
+          });
+        }
+        if (returnEntries.length > 0) {
+          script += '      ' + returnEntries.join(',\n      ') + '\n';
+        }
+        script += '    };\n';
       }
-      script += '    };\n';
       script += '  }\n';
       script += '};\n';
     } else {

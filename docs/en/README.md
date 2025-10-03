@@ -1,30 +1,30 @@
-# 介绍
+# Introduction
 
-`Demo Container V2` 是一个基于 `Vuepress` 的插件，它可以帮助你在编写文档的时候增加 `Vue` 示例，它的诞生初衷是为了降低编写组件文档时增加一些相关示例的难度。
+`Demo Container V2` is a `Vuepress-based` plug-in, which can help you add `Vue` examples when writing documents. Its original intention is to reduce the difficulty of adding some related examples when writing component documents.
 
-## 如何工作
+## How does it work?
 
-Demo Container V2 使用 Vuepress 的 [chainMarkdown、extendMarkdown API](https://vuepress.vuejs.org/zh/plugin/option-api.html#extendmarkdown) 拓展了其内部的 markdown 对象，并做了以下操作：
+The Demo Container V2 uses Vuepress's [chainMarkdown, extendMarkdown API](https://vuepress.vuejs.org/plugin/option-api.html#extendmarkdown) to expand its internal markdown object and does the following:
 
-1. 基于 [markdown-it-container](https://github.com/markdown-it/markdown-it-container) 构建了一个识别以下代码块的插件
+1. Based on [markdown-it-container](https://github.com/markdown-it/markdown-it-container), a plug-in that recognizes the following code blocks is built
 ```
 :::demo xxx
 xxx
 :::
 ```
-为其包裹 `<demo-block></demo-block>` 组件，拾取示例代码并缓存下来。至此，已完成示例代码的解析，等待后续读取。
+Wrap code by `<demo-block> </demo-block>` component, wait for subsequent reading;
 
-2. 拓展 markdown.render 方法，在其渲染结果的基础上，示例代码，使用 `vue-template-compiler` 将其编译成 Render Function，并作为整个示例页面的子组件引入;
+2. Expand the `markdown.render` method, based on its rendering results, read the sample code annotated by `pre-render-demo` and use `vue-template-compiler` compile it into a Redner Function and introduce it as a subcomponent of the entire sample page.
 
-3. 示例页面代码后续将被 `vue-loader` 处理，编译为最终文档。
+3. The sample page code will be processed by `vue-loader` and compiled into the final document
 
-## 渲染效果
+## What is the rendering effect?
 
-::: tip 以下是使用 Demo Container V2 插件渲染的一个组件示例
-其展示效果参照了 Element UI 文档组件 [demo-block.vue](https://github.com/ElemeFE/element/blob/dev/examples/components/demo-block.vue) 的实现
+::: tip The following is an example of a component rendered using the Demo Container plugin
+The display effect refers to the implementation of Element UI document component [demo-block.vue](https://github.com/ElemeFE/element/blob/dev/examples/components/demo-block.vue)
 :::
 
-::: demo 这个例子参考了 `Vue` 官方文档示例中 [GitHub 提交](https://cn.vuejs.org/v2/examples/commits.html) 实现，使用 Github API 获取仓库最新的提交数据，并且以列表形式将它们展示了出来。
+::: demo This example refers to the [GitHub submission](https://vuejs.org/v2/examples/commits.html) implementation in the example of the `Vue` official document, uses the Github API to get the latest submission data of the repository, and displays them in a list.
 ```html
 <template>
   <div class="vuepress-plugin-demo-container-v2-example">
@@ -75,13 +75,16 @@ export default {
       errMsg: null
     };
   },
+
   mounted() {
     this.fetchData();
   },
+
   watch: {
     repoName: 'fetchData',
     currentBranch: 'fetchData'
   },
+
   filters: {
     truncate: function(v) {
       var newline = v.indexOf('\n');
@@ -91,6 +94,7 @@ export default {
       return v.replace(/T|Z/g, ' ');
     }
   },
+
   methods: {
     changeRepoName() {
       this.repoName = this.inputRepoName;
@@ -101,7 +105,7 @@ export default {
       const xhr = new XMLHttpRequest();
       xhr.open('GET', apiURL);
       xhr.onerror = err => {
-        this.errMsg = '连接错误，过于频繁的请求可能被拒绝';
+        this.errMsg = '连接错误,过于频繁的请求可能被拒绝';
       }
       xhr.onload = () => {
         const resp = JSON.parse(xhr.responseText);
@@ -120,7 +124,7 @@ export default {
 </script>
 
 <style>
-.vuepress-plugin-v2-example .branch {
+.vuepress-plugin-demo-container-v2-example .branch {
   margin-right: 8px;
 }
 .vuepress-plugin-demo-container-v2-example .danger-msg {
@@ -155,7 +159,7 @@ export default {
 ```
 :::
 
-## 贡献者
+## Contributor
 
 <p>
   <a-tooltip title="JianhuiChen">

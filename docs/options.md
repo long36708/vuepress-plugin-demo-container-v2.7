@@ -1,20 +1,20 @@
-# Options
+# 配置
 
 ## component
 
-- Type: `string`
-- Default: `demo-block`
+- 类型：`string`
+- 默认值：`demo-block`
 
-The component name of the warp code and example.
+包裹代码与示例的组件名称。提供了自定义源码显示的能力。
 
-Use this parameter to customize the **demo block** component inside the Demo Container V2. The customized component should support the following three slots:
+使用本参数自定义展示示例的 **示例块** 组件，自定义的组件应当支持以下三个插槽：
 
-- Slot `demo`: Is rendered as an example
-- Slot `description`: Is rendered as example description information
-- Slot `source`: Source code rendered as an example
+- Slot `demo`：示例
+- Slot `description`：示例描述
+- Slot `source`：示例源码
 
-::: warning
-The configured component name must be registered globally in Vuepress, which can be registered using `Vue.component` in enhanceApp.js.
+::: warning 注意
+配置的组件名称必须在 Vuepress 全局注册，可在 enhanceApp.js 中使用 `Vue.component` 进行注册。
 :::
 
 ```js
@@ -27,7 +27,7 @@ module.exports = {
 }
 ```
 
-Set custom sample block component YourCustomDemoBlock.vue.
+设置自定义示例块组件 YourCustomDemoBlock.vue
 
 ```html
 <template>
@@ -44,9 +44,9 @@ Set custom sample block component YourCustomDemoBlock.vue.
 
 ## locales
 
-- Type: `Array`
-- Default
+- 类型：`Array`
+- 默认值
 
 <<< @/src/i18n/default_lang.json
 
-Use `locales` to customize the internationalization configuration, and the plugin will complete the language switching according to the [matching lang field in Vuepress](https://vuepress.vuejs.org/guide/i18n.html).
+使用 `locales` 自定义国际化配置，插件将根据 Vuepress 中匹配的 lang 字段完成语言切换，[点此查看 Vuepress 的多语言支持](https://vuepress.vuejs.org/zh/guide/i18n.html)。

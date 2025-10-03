@@ -13,7 +13,7 @@ module.exports = {
             title: 'Demo Container V2',
             description: '用于编写 vue 组件示例的 vuepress 插件'
         },
-        '/zh/': {
+        '/en/': {
             lang: 'en-US',
             title: 'Demo Container V2',
             description: 'plugin for vuepress to display vue demo'
@@ -24,22 +24,23 @@ module.exports = {
         editLinks: false,
         docsDir: 'docs',
         locales: {
-            '/zh/': {
+            '/': {
                 label: '简体中文',
                 selectText: '选择语言',
                 editLinkText: '在 GitHub 上编辑此页',
                 lastUpdated: '上次更新',
                 sidebar: {
-                    '/zh/': genSidebarConfig('指南')
+                    '/': genSidebarConfig('指南')
                 }
+
             },
-            '/': {
+            '/en/': {
                 label: 'English',
                 selectText: 'Languages',
                 editLinkText: 'Edit this page on GitHub',
                 lastUpdated: 'Last Updated',
                 sidebar: {
-                    '/': genSidebarConfig('Guide')
+                    '/en/': genSidebarConfig('Guide')
                 }
             },
         }
@@ -73,6 +74,10 @@ module.exports = {
         ]
     ],
     configureWebpack: {
+        // 关闭生产构建时的代码压缩与混淆，以便调试输出可读的 JS（optimization.minimize = false）
+        optimization: {
+            minimize: false
+        },
         resolve: {
             alias: {
                 '@assets': path.resolve(__dirname, './public/assets')

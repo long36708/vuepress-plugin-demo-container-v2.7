@@ -135,7 +135,7 @@ const sendMessage = () => {
 
 <style scoped>
 
-div {
+/* div {
 
   border: 1px solid #ddd;
 
@@ -143,7 +143,7 @@ div {
 
   border-radius: 5px;
 
-}
+} */
 
 </style>
 

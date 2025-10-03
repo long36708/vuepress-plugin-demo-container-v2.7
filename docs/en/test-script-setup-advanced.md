@@ -1,8 +1,8 @@
-# 高级 Script Setup 语法测试
+# Advanced Script Setup Syntax Test
 
-## 复杂示例
+## Complex Example
 
-::: demo 使用 script setup 语法的复杂示例
+::: demo Complex example using script setup syntax
 
 ```vue
 <template>
@@ -41,7 +41,7 @@ const reset = () => {
   count.value = 0
 }
 
-// 监听 count 变化
+// Watch count changes
 watch(count, (newValue, oldValue) => {
   console.log(`Count changed from ${oldValue} to ${newValue}`)
 })
@@ -70,84 +70,49 @@ button:hover {
 
 :::
 
-## 使用 defineProps 和 defineEmits
+## Using defineProps and defineEmits
 
-::: demo 使用 defineProps 和 defineEmits 的示例
-
+::: demo Example using defineProps and defineEmits
 
 ```vue
-
 <template>
-
   <div>
-
     <h2>{{ title }}</h2>
-
     <p>Message: {{ message }}</p>
-
     <button @click="sendMessage">Send Message</button>
-
   </div>
-
 </template>
 
-
 <script setup>
-
 import { ref } from 'vue'
 
-
 const props = defineProps({
-
   title: {
-
     type: String,
-
     default: 'Default Title'
-
   },
-
   initialMessage: {
-
     type: String,
-
     default: 'Hello'
-
   }
-
 })
-
 
 const emit = defineEmits(['message-sent'])
 
-
 const message = ref(props.initialMessage)
 
-
 const sendMessage = () => {
-
   emit('message-sent', message.value)
-
 }
-
 </script>
 
-
 <style scoped>
-
-div {
-
+/* div {
   border: 1px solid #ddd;
-
   padding: 15px;
-
   border-radius: 5px;
-
-}
-
+} */
 </style>
-
 ```
-
 
 :::

@@ -1,24 +1,24 @@
-# 复杂示例
+# Complex example
 
-此处提供了两种复杂场景的示例，Demo Container V2 都能良好的支持，具体效果如下所示：
+Here are two examples of complex scenarios that Demo Container V2 can support well. The specific effects are as follows:
 
-## TodoMVC 示例
+## TodoMVC example
 
-本例子取自 `Vue` 官方文档示例中较为复杂的 `TodoMVC`，其展示效果 [点此查看](https://cn.vuejs.org/v2/examples/todomvc.html)
+`demo-container-v2` provides good support for the example. This example is taken from the more complicated` TodoMVC` in the example of the `Vue` official document, and its display effect [Click here to view](https://vuejs.org/v2/examples/todomvc.html)
 
-拷贝官方代码将其改造成 `template` 的写法后，通过以下语法引用
+After copying the official code and transforming it into `template`, use the following syntax to quote
 
 ```html
-::: demo `TodoMVC` 是 `Vue` 官方文档中提供的示例，其涵盖了 `data、watch、computed、methods、directives` 等较多 `API` 调用
+::: demo `TodoMVC` is an example provided in the official documentation of` Vue`, which covers many `API` calls such as` data, watch, computed, methods, directives`, etc.
 ```html
 // Omit TodoMVC related code...
-` ``
+` ` ` <= Remove the left space
 :::
 ```
 
-其渲染结果如下所示
+The rendering result is as follows
 
-::: demo `TodoMVC` 是 `Vue` 官方文档中提供的示例，其涵盖了 `data、watch、computed、methods、directives` 等较多 `API` 调用
+::: demo `TodoMVC` is an example provided in the official documentation of` Vue`, which covers many `API` calls such as` data, watch, computed, methods, directives`, etc.
 ```html
 <template>
   <div class="todo-list-exp">
@@ -638,17 +638,17 @@ html .clear-completed:active {
 ```
 :::
 
-## 结合组件库示例
+## Example of combined component library
 
-作为一个 **组件示例插件**，其使用场景大多是在开发组件库时，用作组件库的文档示例构建，在此将演示基于 [AntDeisgnVue](https://www.antdv.com/docs/vue/introduce-cn/) 组件库的文档示例编写
+As a **component example plug-in**, most of its usage scenarios are used as component library document sample construction when developing a component library. Here we will demonstrate the document sample writing based on [AntDeisgnVue](https://www.antdv.com/docs/vue/introduce/) component library
 
-首先我们在 `Vuepress` 中 引入 `AntDesignVue` 组件库：
+First we introduce the `AntDesignVue` component library in` Vuepress`:
 
 ```bash
 yarn add ant-design-vue
 ```
 
-然后编辑 `.vuepress/enhanceApp.js` 文件（如不存在则创建）：
+Then edit the `.vuepress/enhanceApp.js` file (create if it does not exist):
 
 ```js
 import Antd from 'ant-design-vue'
@@ -660,43 +660,43 @@ export default ({
 }
 ```
 
-到这里就完成组件库的引入，现在可以找一个 `Markdown` 文件键入以下代码
+At this point, the introduction of the component library is completed. Now you can find a `Markdown` file and type the following code
 
 ```html
-::: demo  `AntDesignVue` xxx组件示例，**请注意xxx**
-```html
-<template>
-	<a-button type="primary">Primary</a-button>
-	<a-button type="danger">Danger</a-button>
-	<a-config-provider :auto-insert-space-in-button="false">
-		<a-button type="primary">按钮</a-button>
-	</a-config-provider>
-</template>
-` ``
-:::
-```
-
-渲染结果如下所示
-
-::: demo  `AntDesignVue` xxx组件示例，**请注意xxx**
+::: demo  `AntDesignVue` xxx component example, **please note xxx**
 ```html
 <template>
 	<a-button type="primary">Primary</a-button>
 	<a-button type="danger">Danger</a-button>
 	<a-config-provider :auto-insert-space-in-button="false">
-		<a-button type="primary">按钮</a-button>
+		<a-button type="primary">Button</a-button>
+	</a-config-provider>
+</template>
+` ` ` <= Remove the left space
+:::
+```
+
+The rendering result is shown below
+
+::: demo  `AntDesignVue` xxx component example, **please note xxx**
+```html
+<template>
+	<a-button type="primary">Primary</a-button>
+	<a-button type="danger">Danger</a-button>
+	<a-config-provider :auto-insert-space-in-button="false">
+		<a-button type="primary">Button</a-button>
 	</a-config-provider>
 </template>
 ```
 :::
 
-**以下是基于组件库更全面的一个示例**
+**The following is a more comprehensive example based on the component library**
 
-::: demo 
+::: demo
 ```html
 <template>
   <div>
-    <a-card title="下拉菜单" style="margin: 8px 0;">
+    <a-card title="Dropdown" style="margin: 8px 0;">
       <a-dropdown-button @click="handleButtonClick">
         Dropdown
         <a-menu slot="overlay" @click="handleMenuClick">
@@ -727,7 +727,7 @@ export default ({
         <a-icon slot="icon" type="user" />
       </a-dropdown-button>
     </a-card>
-    <a-card title="徽标" style="margin: 8px 0;">
+    <a-card title="Badge" style="margin: 8px 0;">
       <div id="components-badge-demo-dot">
         <a-badge dot>
           <a-icon type="notification" />
@@ -740,7 +740,7 @@ export default ({
         </a-badge>
       </div>
     </a-card>
-    <a-card title="消息和模态框" style="margin: 8px 0;">
+    <a-card title="Message And Modal" style="margin: 8px 0;">
       <a-button type="primary" @click="info">Display normal message</a-button>
       <a-button @click="showConfirm">Confirm</a-button>
       <a-button type="dashed" @click="showDeleteConfirm">Delete</a-button>
@@ -751,7 +751,7 @@ export default ({
         <p>Bla bla ...</p>
       </a-modal>
     </a-card>
-    <a-card title="日期" style="margin: 8px 0;">
+    <a-card title="Date" style="margin: 8px 0;">
       <div>
         <a-radio-group v-model="size">
           <a-radio-button value="large">Large</a-radio-button>

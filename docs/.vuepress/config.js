@@ -97,7 +97,8 @@ function genSidebarConfig(title) {
                 'options',
                 'complex',
                 'test-script-setup',
-                'test-script-setup-advanced'
+                'test-script-setup-advanced',
+                'architecture'
             ]
         }
     ]

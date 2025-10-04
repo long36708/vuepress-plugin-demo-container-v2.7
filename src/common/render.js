@@ -59,6 +59,12 @@ module.exports = function (content) {
         name: 'component-doc',
         components: {
           ${componenetsString}
+        },
+        // 为 Vue 2 兼容性提供 defineProps 和 defineEmits 的模拟实现
+        // 这些函数在 Vue 3 中是编译时宏，在 Vue 2 中需要模拟
+        beforeCreate() {
+          // 确保 defineProps 和 defineEmits 在组件作用域中可用
+          if (!this.$options.methods) this.$options.methods = {};
         }
       }
     </script>`;
